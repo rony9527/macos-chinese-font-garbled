@@ -1,10 +1,29 @@
 # macOS 中文乱码（字形映射错误）诊断与修复
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org)
+
+> **中文说明**
+>
+> macOS 上中文突然变成「另一个看得懂但错了的字」——比如「路由」显示成「零窥菱伿」——而且不是某一个软件的问题，FlClash、Chrome、YouTube、终端全都中招。
+>
+> 这不是编码错误，也不是缺字体，而是字体文件的 **CFF 索引偏移损坏**：渲染引擎按规范去读字形轮廓时，头部偏移指向了错位区域，取到的是相邻字形的轮廓，于是渲染出另一个真实汉字。
+>
+> 本仓库提供一个零依赖的检测脚本，直接判定哪个字体坏了；再配上「先装官方字体、后移走坏字体」的修复顺序，避免问题从「部分错字」恶化成「满屏方块」。
+>
+> 这条排查路径来自一次真实的故障：FlClash 界面中文乱码，同时 YouTube 网页中文也坏。因为跨应用同时中招，所以断定与单个应用无关，最终解析字体二进制定位到 `~/Library/Fonts/` 里一份损坏的 PingFang SC 副本。
+
+---
 
 macOS 上中文显示成**另一个真实汉字**（「路」→「零窥菱伿」）时，用本技能定位并修复。
 
 这不是编码问题，也不是缺字体——是字体文件的 CFF 索引偏移损坏，导致渲染引擎按错位数据取到了相邻字形的轮廓。
+
+## 作者
+
+**lpeng**（GitHub: [@rony9527](https://github.com/rony9527)）
+
+本项目由作者在与 AI 助手协作排障的过程中整理而成——排查思路、判据阈值与实测数据由作者验证确定，代码与文档由 AI 协助撰写。
 
 ## 快速使用
 
@@ -140,6 +159,12 @@ git clone <repo-url> ~/.claude/skills/macos-chinese-font-garbled
 
 纯 Python 3 标准库（`struct` / `sys` / `pathlib`），无第三方依赖。
 
+## 作者
+
+**lpeng**（GitHub: [@rony9527](https://github.com/rony9527)）
+
+问题定位、判据阈值与实测数据由作者验证确定；代码与文档由 AI 协助撰写。
+
 ## License
 
-MIT
+MIT — 详见 [LICENSE](LICENSE)
